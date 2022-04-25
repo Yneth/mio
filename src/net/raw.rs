@@ -47,7 +47,7 @@ impl NetRawSocket {
     }
 
     pub fn connect(&self, addr: SocketAddr) -> io::Result<()> {
-        self.inner.connect(addr.into())
+        self.inner.connect(&addr.into())
     }
 
     #[cfg_attr(feature = "os-poll", doc = "```")]
