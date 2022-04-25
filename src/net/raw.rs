@@ -53,6 +53,10 @@ impl NetRawSocket {
         (&self.inner).set_nonblocking(on)
     }
 
+    pub fn set_header_included(&self, on: bool) -> io::Result<()> {
+        (&self.inner).set_header_included(on)
+    }
+
     #[cfg_attr(feature = "os-poll", doc = "```")]
     pub fn set_broadcast(&self, on: bool) -> io::Result<()> {
         self.inner.set_broadcast(on)
