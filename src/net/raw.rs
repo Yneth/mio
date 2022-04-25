@@ -38,15 +38,6 @@ impl NetRawSocket {
             .map(|_| *self)
     }
 
-    #[cfg_attr(all(feature = "os-poll", not(target_os = "freebsd")), doc = "```")]
-    pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        self.inner.local_addr().map(Into::into)
-    }
-
-    pub fn peer_addr(&self) -> io::Result<SocketAddr> {
-        self.inner.peer_addr().map(Into::into)
-    }
-
     pub fn send_to(&self, buf: &[u8], target: SocketAddr) -> io::Result<usize> {
         self.inner.do_io(|inner| inner.send_to(buf, &target.into()))
     }
