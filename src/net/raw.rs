@@ -49,6 +49,10 @@ impl NetRawSocket {
         self.inner.connect(&addr.into())
     }
 
+    pub fn set_nonblocking(&self, on: bool) -> io::Result<()> {
+        (&self.inner).set_nonblocking(on)
+    }
+
     #[cfg_attr(feature = "os-poll", doc = "```")]
     pub fn set_broadcast(&self, on: bool) -> io::Result<()> {
         self.inner.set_broadcast(on)
