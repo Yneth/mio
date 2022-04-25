@@ -3,6 +3,17 @@
 // Depending on the features not all macros are used.
 #![allow(unused_macros)]
 
+/// The `net-raw` feature is enabled.
+macro_rules! cfg_net_raw {
+    ($($item:item)*) => {
+        $(
+            #[cfg(feature = "net-raw")]
+            #[cfg_attr(docsrs, doc(cfg(feature = "net-raw")))]
+            $item
+        )*
+    }
+}
+
 /// The `os-poll` feature is enabled.
 macro_rules! cfg_os_poll {
     ($($item:item)*) => {

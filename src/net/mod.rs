@@ -37,3 +37,10 @@ pub use self::udp::UdpSocket;
 mod uds;
 #[cfg(unix)]
 pub use self::uds::{SocketAddr, UnixDatagram, UnixListener, UnixStream};
+
+cfg_net_raw! {
+    #[cfg(not(target_os = "wasi"))]
+    mod raw;
+    #[cfg(not(target_os = "wasi"))]
+    pub use self::raw::NetRawSocket;
+}
