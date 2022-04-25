@@ -15,7 +15,6 @@ use crate::{event, Interest, Registry, sys, Token};
 use crate::io_source::IoSource;
 
 #[cfg_attr(feature = "os-poll", doc = "```")]
-#[cfg_attr(not(feature = "os-poll"), doc = "```ignore")]
 pub struct NetRawSocket {
     inner: IoSource<socket2::Socket>,
 }
@@ -33,22 +32,19 @@ impl NetRawSocket {
         NetRawSocket { inner: IoSource::new(socket) }
     }
 
-    // #[cfg_attr(feature = "os-poll", doc = "```")]
-    // #[cfg_attr(not(feature = "os-poll"), doc = "```ignore")]
-    // pub fn bind(&self) -> io::Result<NetRawSocket> {
-    // }
+    #[cfg_attr(feature = "os-poll", doc = "```")]
+    pub fn bind(&self, addr: SocketAddr) -> io::Result<NetRawSocket> {
+        self.inner.do_io(|inner| inner.bind(&addr.into()))
+            .map(|_| *self)
+    }
 
     #[cfg_attr(all(feature = "os-poll", not(target_os = "freebsd")), doc = "```")]
-    #[cfg_attr(
-    any(not(feature = "os-poll"), target_os = "freebsd"),
-    doc = "```ignore"
-    )]
     pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        self.inner.local_addr().map(From::from)
+        self.inner.local_addr().map(Into::into)
     }
 
     pub fn peer_addr(&self) -> io::Result<SocketAddr> {
-        self.inner.peer_addr().map(From::from)
+        self.inner.peer_addr().map(Into::into)
     }
 
     pub fn send_to(&self, buf: &[u8], target: SocketAddr) -> io::Result<usize> {
@@ -63,15 +59,12 @@ impl NetRawSocket {
         self.inner.connect(addr.into())
     }
 
-
     #[cfg_attr(feature = "os-poll", doc = "```")]
-    #[cfg_attr(not(feature = "os-poll"), doc = "```ignore")]
     pub fn set_broadcast(&self, on: bool) -> io::Result<()> {
         self.inner.set_broadcast(on)
     }
 
     #[cfg_attr(feature = "os-poll", doc = "```")]
-    #[cfg_attr(not(feature = "os-poll"), doc = "```ignore")]
     pub fn broadcast(&self) -> io::Result<bool> {
         self.inner.broadcast()
     }
@@ -101,13 +94,11 @@ impl NetRawSocket {
     }
 
     #[cfg_attr(feature = "os-poll", doc = "```")]
-    #[cfg_attr(not(feature = "os-poll"), doc = "```ignore")]
     pub fn set_ttl(&self, ttl: u32) -> io::Result<()> {
         self.inner.set_ttl(ttl)
     }
 
     #[cfg_attr(feature = "os-poll", doc = "```")]
-    #[cfg_attr(not(feature = "os-poll"), doc = "```ignore")]
     pub fn ttl(&self) -> io::Result<u32> {
         self.inner.ttl()
     }
@@ -155,7 +146,6 @@ impl NetRawSocket {
     }
 
     #[cfg_attr(unix, doc = "```no_run")]
-    #[cfg_attr(windows, doc = "```ignore")]
     pub fn try_io<F, T>(&self, f: F) -> io::Result<T>
         where
             F: FnOnce() -> io::Result<T>,
