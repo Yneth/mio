@@ -33,9 +33,8 @@ impl NetRawSocket {
     }
 
     #[cfg_attr(feature = "os-poll", doc = "```")]
-    pub fn bind(&self, addr: SocketAddr) -> io::Result<NetRawSocket> {
+    pub fn bind(&self, addr: SocketAddr) -> io::Result<()> {
         self.inner.do_io(|inner| inner.bind(&addr.into()))
-            .map(|_| *self)
     }
 
     pub fn send_to(&self, buf: &[u8], target: SocketAddr) -> io::Result<usize> {
