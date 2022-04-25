@@ -43,11 +43,11 @@ impl NetRawSocket {
     doc = "```ignore"
     )]
     pub fn local_addr(&self) -> io::Result<SocketAddr> {
-        self.inner.local_addr().map(From::from)
+        self.inner.local_addr().map(Into::into)
     }
 
     pub fn peer_addr(&self) -> io::Result<SocketAddr> {
-        self.inner.peer_addr().map(From::from)
+        self.inner.peer_addr().map(Into::into)
     }
 
     pub fn send_to(&self, buf: &[u8], target: SocketAddr) -> io::Result<usize> {
