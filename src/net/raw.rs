@@ -8,7 +8,6 @@ use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 #[cfg(windows)]
 use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket};
 
-use libc::c_int;
 use socket2::{Domain, Protocol, Socket, Type};
 
 use crate::{event, Interest, Registry, sys, Token};
@@ -27,7 +26,7 @@ impl NetRawSocket {
         Ok(NetRawSocket { inner: IoSource::new(socket) })
     }
 
-    pub fn from_fd(fd: c_int) -> NetRawSocket {
+    pub fn from_fd(fd: RawFd) -> NetRawSocket {
         let socket = unsafe { socket2::Socket::from_raw_fd(fd) };
         NetRawSocket { inner: IoSource::new(socket) }
     }
