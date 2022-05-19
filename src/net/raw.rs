@@ -26,8 +26,15 @@ impl NetRawSocket {
         Ok(NetRawSocket { inner: IoSource::new(socket) })
     }
 
-    pub fn from_fd(fd: RawFd) -> NetRawSocket {
+    #[cfg(unix)]
+    pub fn from_raw_fd(fd: RawFd) -> NetRawSocket {
         let socket = unsafe { socket2::Socket::from_raw_fd(fd) };
+        NetRawSocket { inner: IoSource::new(socket) }
+    }
+
+    #[cfg(windows)]
+    pub fn from_raw_fd(raw_sock: RawSocket) -> NetRawSocket {
+        let socket = unsafe { socket2::Socket::from_raw_socket(raw_sock) };
         NetRawSocket { inner: IoSource::new(socket) }
     }
 
@@ -204,7 +211,7 @@ impl FromRawFd for NetRawSocket {
     /// The caller is responsible for ensuring that the socket is in
     /// non-blocking mode.
     unsafe fn from_raw_fd(fd: RawFd) -> NetRawSocket {
-        NetRawSocket::from_fd(FromRawFd::from_raw_fd(fd))
+        NetRawSocket::from_raw_fd(fd)
     }
 }
 
@@ -231,6 +238,6 @@ impl FromRawSocket for NetRawSocket {
     /// The caller is responsible for ensuring that the socket is in
     /// non-blocking mode.
     unsafe fn from_raw_socket(socket: RawSocket) -> NetRawSocket {
-        NetRawSocket::from_fd(FromRawSocket::from_raw_socket(socket))
+        NetRawSocket::from_raw_socket(socket)
     }
 }
