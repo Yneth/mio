@@ -41,7 +41,7 @@ os-ext = [
 ]
 # Enables `mio::net` module containing networking primitives.
 net = []
-net-raw = ["dep:socket2"]
+net-raw = ["socket2"]
 
 [dependencies]
 log = { version = "0.4.8", optional = true }
