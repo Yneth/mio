@@ -1,8 +1,6 @@
 use std::fmt;
 use std::io;
-use std::net;
 use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
-use socket2::SockAddr;
 #[cfg(unix)]
 use std::os::unix::io::{AsRawFd, FromRawFd, IntoRawFd, RawFd};
 #[cfg(windows)]
@@ -10,7 +8,7 @@ use std::os::windows::io::{AsRawSocket, FromRawSocket, IntoRawSocket, RawSocket}
 
 use socket2::{Domain, Protocol, Socket, Type};
 
-use crate::{event, Interest, Registry, sys, Token};
+use crate::{event, Interest, Registry, Token};
 use crate::io_source::IoSource;
 
 #[cfg_attr(feature = "os-poll", doc = "```")]
