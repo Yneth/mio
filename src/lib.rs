@@ -1,5 +1,4 @@
 #![deny(
-    missing_docs,
     missing_debug_implementations,
     rust_2018_idioms,
     unused_imports,

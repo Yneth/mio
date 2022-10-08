@@ -236,6 +236,6 @@ impl FromRawSocket for NetRawSocket {
     /// The caller is responsible for ensuring that the socket is in
     /// non-blocking mode.
     unsafe fn from_raw_socket(socket: RawSocket) -> NetRawSocket {
-        NetRawSocket::from_raw_socket(socket)
+        NetRawSocket::from_raw_fd(socket)
     }
 }
