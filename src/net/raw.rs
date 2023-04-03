@@ -54,11 +54,11 @@ impl NetRawSocket {
     }
 
     pub fn set_nonblocking(&self, on: bool) -> io::Result<()> {
-        (&self.inner).set_nonblocking(on)
+        self.inner.set_nonblocking(on)
     }
 
     pub fn set_header_included(&self, on: bool) -> io::Result<()> {
-        (&self.inner).set_header_included(on)
+        self.inner.set_header_included(on)
     }
 
     #[cfg_attr(feature = "os-poll", doc = "```")]
