@@ -57,7 +57,6 @@ impl NetRawSocket {
         self.inner.set_nonblocking(on)
     }
 
-    #[cfg(all(feature = "all", not(target_os = "redox")))]
     pub fn set_header_included(&self, on: bool) -> io::Result<()> {
         self.inner.set_header_included(on)
     }
